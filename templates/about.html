@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - College Chatbot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    {% if is_public %}
+    <!-- Public Navigation -->
+    <nav class="landing-nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>🏛️ Sri Aravindhar Arts and Science College</h2>
+            </div>
+            <div class="nav-links">
+                <a href="{{ url_for('index') }}" class="nav-link">Home</a>
+                <a href="{{ url_for('about') }}" class="nav-link active">About</a>
+                <a href="{{ url_for('chatbot') }}" class="nav-link">Chatbot</a>
+                <a href="{{ url_for('student_login') }}" class="nav-link btn-nav">Student Login</a>
+            </div>
+        </div>
+    </nav>
+    {% else %}
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>College Chatbot</h2>
+        </div>
+        <nav class="sidebar-nav">
+            {% if session.role == 'student' %}
+            <a href="{{ url_for('student_dashboard') }}" class="nav-item">
+                <span>🏠</span> Dashboard
+            </a>
+            <a href="{{ url_for('chatbot') }}" class="nav-item">
+                <span>💬</span> Chatbot
+            </a>
+            {% else %}
+            <a href="{{ url_for('teacher_dashboard') }}" class="nav-item">
+                <span>🏠</span> Dashboard
+            </a>
+            {% endif %}
+            <a href="{{ url_for('profile') }}" class="nav-item">
+                <span>👤</span> Profile
+            </a>
+            <a href="{{ url_for('about') }}" class="nav-item active">
+                <span>ℹ️</span> About
+            </a>
+            <a href="{{ url_for('logout') }}" class="nav-item">
+                <span>🚪</span> Logout
+            </a>
+        </nav>
+    </div>
+    {% endif %}
+
+    <!-- Main Content -->
+    <div class="main-content {% if is_public %}public-content{% endif %}">
+        {% if not is_public %}
+        <!-- Top Navbar -->
+        <div class="navbar">
+            <h1>About College</h1>
+            <div class="navbar-user">
+                <span>Welcome, {{ session.name or session.email_phone }}</span>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- About Content -->
+        <div class="about-container">
+            <div class="about-hero">
+                <h1>Sri Aravindhar Arts and Science College</h1>
+                <p class="about-subtitle">Affiliated to Annamalai University</p>
+            </div>
+
+            <div class="about-content">
+                <div class="about-section">
+                    <h2>🎓 Our Mission</h2>
+                    <p>We are committed to providing quality education and fostering academic excellence. Our mission is to empower students with knowledge, skills, and values that prepare them for successful careers and meaningful contributions to society.</p>
+                </div>
+
+                <div class="about-section">
+                    <h2>📚 Courses Offered</h2>
+                    <div class="courses-list">
+                        <div class="course-group">
+                            <h3>💻 Computer Science Department</h3>
+                            <ul class="about-list">
+                                <li>BCA (Bachelor of Computer Applications)</li>
+                                <li>BSc CS (Bachelor of Science in Computer Science)</li>
+                            </ul>
+                        </div>
+                        <div class="course-group">
+                            <h3>🔢 Mathematics Department</h3>
+                            <ul class="about-list">
+                                <li>BSc Maths (Bachelor of Science in Mathematics)</li>
+                            </ul>
+                        </div>
+                        <div class="course-group">
+                            <h3>🔬 Science Department</h3>
+                            <ul class="about-list">
+                                <li>BSc Chemistry</li>
+                                <li>BSc Physics</li>
+                            </ul>
+                        </div>
+                        <div class="course-group">
+                            <h3>💼 Commerce Department</h3>
+                            <ul class="about-list">
+                                <li>BCom (Bachelor of Commerce)</li>
+                            </ul>
+                        </div>
+                        <div class="course-group">
+                            <h3>📊 Business Department</h3>
+                            <ul class="about-list">
+                                <li>BBA (Bachelor of Business Administration)</li>
+                                <li>CA (Chartered Accountancy)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-section">
+                    <h2>💰 Fee Structure</h2>
+                    <div class="contact-info">
+                        <p><strong>Semester Fee:</strong> ₹12,000 per semester</p>
+                        <p>For detailed fee information and payment options, please contact the college office.</p>
+                    </div>
+                </div>
+
+                <div class="about-section">
+                    <h2>⏰ College Timings</h2>
+                    <div class="contact-info">
+                        <p><strong>College Hours:</strong> Monday to Friday, 9:30 AM to 3:30 PM</p>
+                        <p><strong>Office Hours:</strong> 9:30 AM to 3:30 PM</p>
+                    </div>
+                </div>
+
+                <div class="about-section">
+                    <h2>🏆 Why Choose Us?</h2>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">👨‍🏫</div>
+                            <h3>Expert Faculty</h3>
+                            <p>Experienced and qualified teachers</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">📖</div>
+                            <h3>Modern Facilities</h3>
+                            <p>State-of-the-art infrastructure</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🎯</div>
+                            <h3>Career Support</h3>
+                            <p>Placement assistance and guidance</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🏛️</div>
+                            <h3>University Affiliation</h3>
+                            <p>Affiliated to Annamalai University</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-section">
+                    <h2>📞 Contact Information</h2>
+                    <div class="contact-info">
+                        <p><strong>College Name:</strong> Sri Aravindhar Arts and Science College</p>
+                        <p><strong>University:</strong> Annamalai University</p>
+                        <p><strong>Address:</strong> Sedharapet, Vannur, Tamil Nadu</p>
+                        <p><strong>Phone:</strong> 6381706363</p>
+                        <p><strong>Email:</strong> akashadhithyan11707@gmail.com</p>
+                        <p><strong>Office Hours:</strong> Monday to Friday, 9:30 AM - 3:30 PM</p>
+                    </div>
+                </div>
+
+                <div class="about-section">
+                    <h2>💬 College Chatbot</h2>
+                    <p>Our AI-powered chatbot is available 24/7 to answer your questions about courses, fees, admissions, timings, and more. Students can access the chatbot from their dashboard to get instant information and support.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

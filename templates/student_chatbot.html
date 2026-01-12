@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Chatbot - College Chatbot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>College Chatbot</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="{{ url_for('student_dashboard') }}" class="nav-item">
+                <span>🏠</span> Dashboard
+            </a>
+            <a href="{{ url_for('student_chatbot') }}" class="nav-item active">
+                <span>💬</span> Chatbot
+            </a>
+            <a href="{{ url_for('profile') }}" class="nav-item">
+                <span>👤</span> Profile
+            </a>
+            <a href="{{ url_for('about') }}" class="nav-item">
+                <span>ℹ️</span> About
+            </a>
+            <a href="{{ url_for('logout') }}" class="nav-item">
+                <span>🚪</span> Logout
+            </a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Navbar -->
+        <div class="navbar">
+            <button class="mobile-menu-toggle" onclick="toggleSidebar()">☰</button>
+            <h1>My Personal Chatbot</h1>
+            <div class="navbar-user">
+                <span>Welcome, {{ session.name or session.email_phone }}</span>
+            </div>
+        </div>
+
+        <!-- Chatbot Content -->
+        <div class="chatbot-container">
+            <div class="chatbot-header">
+                <h2>💬 Your Personal Chatbot</h2>
+                <p>Ask me about your marks, arrears, subjects, and other information. Your teacher can add custom questions for you!</p>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot-message">
+                    <div class="message-avatar">🤖</div>
+                    <div class="message-content">
+                        <p>Hello! I'm your personal chatbot. I can help you with your marks, arrears status, subjects, and answer custom questions set by your teacher. What would you like to know?</p>
+                        <span class="message-time">Just now</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-input-container">
+                <form id="chatForm" class="chat-form">
+                    <input type="text" id="userInput" placeholder="Ask about your marks, arrears, subjects..." autocomplete="off" required>
+                    <button type="submit" class="btn btn-primary send-btn">
+                        <span>Send</span>
+                    </button>
+                </form>
+            </div>
+
+            <div class="quick-questions">
+                <p>Quick Questions:</p>
+                <div class="quick-buttons">
+                    <button class="quick-btn" onclick="sendQuickQuestion('What are my marks?')">My Marks</button>
+                    <button class="quick-btn" onclick="sendQuickQuestion('Do I have any arrears?')">Arrears</button>
+                    <button class="quick-btn" onclick="sendQuickQuestion('What are my subjects?')">Subjects</button>
+                    <button class="quick-btn" onclick="sendQuickQuestion('My semester results')">Results</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Override fetch to use student chatbot endpoint before chatbot.js loads
+        (function() {
+            const originalFetch = window.fetch;
+            window.fetch = function(...args) {
+                if (args[0] === '/chatbot/message' || (typeof args[0] === 'string' && args[0].includes('/chatbot/message'))) {
+                    args[0] = '/student/chatbot/message';
+                }
+                return originalFetch.apply(this, args);
+            };
+        })();
+    </script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+</body>
+</html>

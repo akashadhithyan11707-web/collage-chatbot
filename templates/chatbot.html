@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot - College Chatbot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    {% if is_public %}
+    <!-- Public Navigation -->
+    <nav class="landing-nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>🏛️ Sri Aravindhar Arts and Science College</h2>
+            </div>
+            <div class="nav-links">
+                <a href="{{ url_for('index') }}" class="nav-link">Home</a>
+                <a href="{{ url_for('about') }}" class="nav-link">About</a>
+                <a href="{{ url_for('chatbot') }}" class="nav-link active">Chatbot</a>
+                <a href="{{ url_for('student_login') }}" class="nav-link btn-nav">Student Login</a>
+            </div>
+        </div>
+    </nav>
+    {% else %}
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>College Chatbot</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="{{ url_for('student_dashboard') }}" class="nav-item">
+                <span>🏠</span> Dashboard
+            </a>
+            <a href="{{ url_for('chatbot') }}" class="nav-item active">
+                <span>💬</span> Chatbot
+            </a>
+            <a href="{{ url_for('profile') }}" class="nav-item">
+                <span>👤</span> Profile
+            </a>
+            <a href="{{ url_for('about') }}" class="nav-item">
+                <span>ℹ️</span> About
+            </a>
+            <a href="{{ url_for('logout') }}" class="nav-item">
+                <span>🚪</span> Logout
+            </a>
+        </nav>
+    </div>
+    {% endif %}
+
+    <!-- Main Content -->
+    <div class="main-content {% if is_public %}public-content{% endif %}">
+        {% if not is_public %}
+        <!-- Top Navbar -->
+        <div class="navbar">
+            <h1>College Chatbot</h1>
+            <div class="navbar-user">
+                <span>Welcome, {{ session.name or session.email_phone }}</span>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Chatbot Content -->
+        <div class="chatbot-container">
+            <div class="chatbot-header">
+                <h2>💬 Sri Aravindhar Arts and Science College Chatbot</h2>
+                <p>Ask me about courses, fees (₹12,000/semester), admissions, timings (9:30 AM - 3:30 PM), and contact information</p>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot-message">
+                    <div class="message-avatar">🤖</div>
+                    <div class="message-content">
+                        <p>Hello! Welcome to Sri Aravindhar Arts and Science College chatbot. How can I help you today?</p>
+                        <span class="message-time">Just now</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-input-container">
+                <form id="chatForm" class="chat-form">
+                    <input type="text" id="userInput" placeholder="Type your message here..." autocomplete="off" required>
+                    <button type="submit" class="btn btn-primary send-btn">
+                        <span>Send</span>
+                    </button>
+                </form>
+            </div>
+
+            <div class="quick-questions">
+                <p>Quick Questions:</p>
+                <div class="quick-buttons">
+                    <button class="quick-btn" onclick="sendQuickQuestion('Tell me about courses')">Courses</button>
+                    <button class="quick-btn" onclick="sendQuickQuestion('What are the fees?')">Fees</button>
+                    <button class="quick-btn" onclick="sendQuickQuestion('How to apply for admission?')">Admission</button>
+                    <button class="quick-btn" onclick="sendQuickQuestion('What are the college timings?')">Timings</button>
+                    <button class="quick-btn" onclick="sendQuickQuestion('Contact information')">Contact</button>
+                    <button class="quick-btn" onclick="sendQuickQuestion('College name')">College Name</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+</body>
+</html>
