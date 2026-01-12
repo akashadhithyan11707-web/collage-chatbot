@@ -10,6 +10,7 @@ import sqlite3
 import os
 import re
 import json
+import shutil
 
 app = Flask(__name__)
 app.secret_key = 'your-secret-key-change-in-production-2024'
@@ -18,10 +19,24 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
+# Database configuration
+DB_NAME = 'college.db'
+if os.environ.get('VERCEL'):
+    DB_NAME = '/tmp/college.db'
+
 # Database initialization
 def init_db():
     """Initialize the database with required tables"""
-    conn = sqlite3.connect('college.db')
+    # On Vercel, copy the database from the source if it exists and target doesn't
+    if os.environ.get('VERCEL') and not os.path.exists(DB_NAME):
+        if os.path.exists('college.db'):
+            try:
+                shutil.copy('college.db', DB_NAME)
+                print(f"Copied database to {DB_NAME}")
+            except Exception as e:
+                print(f"Failed to copy database: {e}")
+
+    conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
     
     # Users table
@@ -86,7 +101,7 @@ def init_db():
 
 def get_db_connection():
     """Get database connection"""
-    conn = sqlite3.connect('college.db')
+    conn = sqlite3.connect(DB_NAME)
     conn.row_factory = sqlite3.Row
     return conn
 

@@ -106,14 +106,16 @@
                                 </td>
                                 <td>{{ student.email_phone }}</td>
                                 <td>
-                                    <button class="btn-icon" data-student-id="{{ student.id }}" data-student-name="{{ student.name or '' }}" data-student-roll="{{ student.roll_number or '' }}" data-student-dept="{{ student.department or '' }}" data-student-age="{{ student.age or '' }}" data-student-blood="{{ student.blood_group or '' }}" data-student-subjects="{{ student.subjects_parsed | tojson | safe }}" data-student-parent="{{ student.parent_details_parsed | tojson | safe }}" onclick="openEditModalFromButton(this)" title="Edit">✏️</button>
-                                    <button class="btn-icon" data-student-id="{{ student.id }}" onclick="openMarksModalFromButton(this)" title="Update Marks">📊</button>
-                                    <button class="btn-icon" data-student-id="{{ student.id }}" onclick="openArrearsModalFromButton(this)" title="Update Arrears">⚠️</button>
-                                    <button class="btn-icon" data-student-id="{{ student.id }}" onclick="openSubjectNotesModalFromButton(this)" title="Add Subject Notes">📝</button>
-                                    <button class="btn-icon" data-student-id="{{ student.id }}" data-notes-link="{{ student.notes_link or '' }}" onclick="openNotesLinkModalFromButton(this)" title="Update Notes Link">📚</button>
-                                    <button class="btn-icon" data-student-id="{{ student.id }}" onclick="openChatbotQuestionsModalFromButton(this)" title="Manage Chatbot Questions">🤖</button>
-                                    <button class="btn-icon" data-student-id="{{ student.id }}" onclick="openResetPasswordModalFromButton(this)" title="Reset Password">🔑</button>
-                                    <button class="btn-icon btn-danger" data-student-id="{{ student.id }}" onclick="deleteStudentFromButton(this)" title="Delete">🗑️</button>
+                                    <div class="action-buttons">
+                                        <button class="btn-icon" data-student-id="{{ student.id }}" data-student-name="{{ student.name or '' }}" data-student-roll="{{ student.roll_number or '' }}" data-student-dept="{{ student.department or '' }}" data-student-age="{{ student.age or '' }}" data-student-blood="{{ student.blood_group or '' }}" data-student-subjects="{{ student.subjects_parsed | tojson | safe }}" data-student-parent="{{ student.parent_details_parsed | tojson | safe }}" onclick="openEditModalFromButton(this)" title="Edit">✏️</button>
+                                        <button class="btn-icon" data-student-id="{{ student.id }}" onclick="openMarksModalFromButton(this)" title="Update Marks">📊</button>
+                                        <button class="btn-icon" data-student-id="{{ student.id }}" onclick="openArrearsModalFromButton(this)" title="Update Arrears">⚠️</button>
+                                        <button class="btn-icon" data-student-id="{{ student.id }}" onclick="openSubjectNotesModalFromButton(this)" title="Add Subject Notes">📝</button>
+                                        <button class="btn-icon" data-student-id="{{ student.id }}" data-notes-link="{{ student.notes_link or '' }}" onclick="openNotesLinkModalFromButton(this)" title="Update Notes Link">📚</button>
+                                        <button class="btn-icon" data-student-id="{{ student.id }}" onclick="openChatbotQuestionsModalFromButton(this)" title="Manage Chatbot Questions">🤖</button>
+                                        <button class="btn-icon" data-student-id="{{ student.id }}" onclick="openResetPasswordModalFromButton(this)" title="Reset Password">🔑</button>
+                                        <button class="btn-icon btn-danger" data-student-id="{{ student.id }}" onclick="deleteStudentFromButton(this)" title="Delete">🗑️</button>
+                                    </div>
                                 </td>
                             </tr>
                             {% endfor %}
