@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teacher Dashboard - College Chatbot</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
@@ -14,16 +15,16 @@
         </div>
         <nav class="sidebar-nav">
             <a href="{{ url_for('teacher_dashboard') }}" class="nav-item active">
-                <span>🏠</span> Dashboard
+                <span><i class="fas fa-home"></i></span> Dashboard
             </a>
             <a href="{{ url_for('profile') }}" class="nav-item">
-                <span>👤</span> Profile
+                <span><i class="fas fa-user"></i></span> Profile
             </a>
             <a href="{{ url_for('about') }}" class="nav-item">
-                <span>ℹ️</span> About
+                <span><i class="fas fa-info-circle"></i></span> About
             </a>
             <a href="{{ url_for('logout') }}" class="nav-item">
-                <span>🚪</span> Logout
+                <span><i class="fas fa-sign-out-alt"></i></span> Logout
             </a>
         </nav>
     </div>
@@ -32,7 +33,7 @@
     <div class="main-content">
         <!-- Top Navbar -->
         <div class="navbar">
-            <button class="mobile-menu-toggle" onclick="toggleSidebar()">☰</button>
+            <button class="mobile-menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
             <h1>Teacher Dashboard</h1>
             <div class="navbar-user">
                 <span>Welcome, {{ session.name or session.email_phone }}</span>
@@ -43,7 +44,7 @@
         <div class="dashboard-content">
             <div class="dashboard-header">
                 <h2>Student Management</h2>
-                <button class="btn btn-primary" onclick="openAddStudentModal()">+ Add Student</button>
+                <button class="btn btn-primary" onclick="openAddStudentModal()"><i class="fas fa-plus"></i> Add Student</button>
             </div>
 
             <div class="students-table-container">
@@ -107,14 +108,14 @@
                                 <td>{{ student.email_phone }}</td>
                                 <td>
                                     <div class="action-buttons">
-                                        <button class="btn-icon" data-student-id="{{ student.id }}" data-student-name="{{ student.name or '' }}" data-student-roll="{{ student.roll_number or '' }}" data-student-dept="{{ student.department or '' }}" data-student-age="{{ student.age or '' }}" data-student-blood="{{ student.blood_group or '' }}" data-student-subjects="{{ student.subjects_parsed | tojson | safe }}" data-student-parent="{{ student.parent_details_parsed | tojson | safe }}" onclick="openEditModalFromButton(this)" title="Edit">✏️</button>
-                                        <button class="btn-icon" data-student-id="{{ student.id }}" onclick="openMarksModalFromButton(this)" title="Update Marks">📊</button>
-                                        <button class="btn-icon" data-student-id="{{ student.id }}" onclick="openArrearsModalFromButton(this)" title="Update Arrears">⚠️</button>
-                                        <button class="btn-icon" data-student-id="{{ student.id }}" onclick="openSubjectNotesModalFromButton(this)" title="Add Subject Notes">📝</button>
-                                        <button class="btn-icon" data-student-id="{{ student.id }}" data-notes-link="{{ student.notes_link or '' }}" onclick="openNotesLinkModalFromButton(this)" title="Update Notes Link">📚</button>
-                                        <button class="btn-icon" data-student-id="{{ student.id }}" onclick="openChatbotQuestionsModalFromButton(this)" title="Manage Chatbot Questions">🤖</button>
-                                        <button class="btn-icon" data-student-id="{{ student.id }}" onclick="openResetPasswordModalFromButton(this)" title="Reset Password">🔑</button>
-                                        <button class="btn-icon btn-danger" data-student-id="{{ student.id }}" onclick="deleteStudentFromButton(this)" title="Delete">🗑️</button>
+                                        <button class="btn-icon" data-student-id="{{ student.id }}" data-student-name="{{ student.name or '' }}" data-student-roll="{{ student.roll_number or '' }}" data-student-dept="{{ student.department or '' }}" data-student-age="{{ student.age or '' }}" data-student-blood="{{ student.blood_group or '' }}" data-student-subjects="{{ student.subjects_parsed | tojson | safe }}" data-student-parent="{{ student.parent_details_parsed | tojson | safe }}" onclick="openEditModalFromButton(this)" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-icon" data-student-id="{{ student.id }}" onclick="openMarksModalFromButton(this)" title="Update Marks"><i class="fas fa-chart-bar"></i></button>
+                                        <button class="btn-icon" data-student-id="{{ student.id }}" onclick="openArrearsModalFromButton(this)" title="Update Arrears"><i class="fas fa-exclamation-triangle"></i></button>
+                                        <button class="btn-icon" data-student-id="{{ student.id }}" onclick="openSubjectNotesModalFromButton(this)" title="Add Subject Notes"><i class="fas fa-file-alt"></i></button>
+                                        <button class="btn-icon" data-student-id="{{ student.id }}" data-notes-link="{{ student.notes_link or '' }}" onclick="openNotesLinkModalFromButton(this)" title="Update Notes Link"><i class="fas fa-book"></i></button>
+                                        <button class="btn-icon" data-student-id="{{ student.id }}" onclick="openChatbotQuestionsModalFromButton(this)" title="Manage Chatbot Questions"><i class="fas fa-robot"></i></button>
+                                        <button class="btn-icon" data-student-id="{{ student.id }}" onclick="openResetPasswordModalFromButton(this)" title="Reset Password"><i class="fas fa-key"></i></button>
+                                        <button class="btn-icon btn-danger" data-student-id="{{ student.id }}" onclick="deleteStudentFromButton(this)" title="Delete"><i class="fas fa-trash"></i></button>
                                     </div>
                                 </td>
                             </tr>

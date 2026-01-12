@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About - College Chatbot</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
@@ -12,8 +13,13 @@
     <nav class="landing-nav">
         <div class="nav-container">
             <div class="nav-logo">
-                <h2>🏛️ Sac College</h2>
+                <h2><i class="fas fa-university"></i> Sac College</h2>
             </div>
+            <button class="mobile-menu-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
             <div class="nav-links">
                 <a href="{{ url_for('index') }}" class="nav-link">Home</a>
                 <a href="{{ url_for('about') }}" class="nav-link active">About</a>
@@ -32,24 +38,24 @@
         <nav class="sidebar-nav">
             {% if session.role == 'student' %}
             <a href="{{ url_for('student_dashboard') }}" class="nav-item">
-                <span>🏠</span> Dashboard
+                <span><i class="fas fa-home"></i></span> Dashboard
             </a>
             <a href="{{ url_for('chatbot') }}" class="nav-item">
-                <span>💬</span> Chatbot
+                <span><i class="fas fa-comments"></i></span> Chatbot
             </a>
             {% else %}
             <a href="{{ url_for('teacher_dashboard') }}" class="nav-item">
-                <span>🏠</span> Dashboard
+                <span><i class="fas fa-home"></i></span> Dashboard
             </a>
             {% endif %}
             <a href="{{ url_for('profile') }}" class="nav-item">
-                <span>👤</span> Profile
+                <span><i class="fas fa-user"></i></span> Profile
             </a>
             <a href="{{ url_for('about') }}" class="nav-item active">
-                <span>ℹ️</span> About
+                <span><i class="fas fa-info-circle"></i></span> About
             </a>
             <a href="{{ url_for('logout') }}" class="nav-item">
-                <span>🚪</span> Logout
+                <span><i class="fas fa-sign-out-alt"></i></span> Logout
             </a>
         </nav>
     </div>
@@ -76,22 +82,22 @@
 
             <div class="about-content">
                 <div class="about-section">
-                    <h2>🎓 Our Mission</h2>
+                    <h2>🎓 
                     <p>We are committed to providing quality education and fostering academic excellence. Our mission is to empower students with knowledge, skills, and values that prepare them for successful careers and meaningful contributions to society.</p>
                 </div>
 
                 <div class="about-section">
-                    <h2>📚 Courses Offered</h2>
+                    <h2>📚 
                     <div class="courses-list">
                         <div class="course-group">
-                            <h3>💻 Computer Science Department</h3>
+                            <h3>💻>
                             <ul class="about-list">
                                 <li>BCA (Bachelor of Computer Applications)</li>
                                 <li>BSc CS (Bachelor of Science in Computer Science)</li>
                             </ul>
                         </div>
                         <div class="course-group">
-                            <h3>🔢 Mathematics Department</h3>
+                            <h3><i class="fas fa-calculator"></i> Mathematics Department</h3>
                             <ul class="about-list">
                                 <li>BSc Maths (Bachelor of Science in Mathematics)</li>
                             </ul>
@@ -104,7 +110,7 @@
                             </ul>
                         </div>
                         <div class="course-group">
-                            <h3>💼 Commerce Department</h3>
+                            <h3><i class="fas fa-briefcase"></i> Commerce Department</h3>
                             <ul class="about-list">
                                 <li>BCom (Bachelor of Commerce)</li>
                             </ul>
@@ -136,10 +142,10 @@
                 </div>
 
                 <div class="about-section">
-                    <h2>🏆 Why Choose Us?</h2>
+                    <h2><i class="fas fa-star"></i> Why Choose Us?</h2>
                     <div class="features-grid">
                         <div class="feature-card">
-                            <div class="feature-icon">👨‍🏫</div>
+                            <div class="feature-icon"><i class="fas fa-chalkboard-teacher"></i></div>
                             <h3>Expert Faculty</h3>
                             <p>Experienced and qualified teachers</p>
                         </div>
@@ -154,7 +160,7 @@
                             <p>Placement assistance and guidance</p>
                         </div>
                         <div class="feature-card">
-                            <div class="feature-icon">🏛️</div>
+                            <div class="feature-icon"><i class="fas fa-university"></i></div>
                             <h3>University Affiliation</h3>
                             <p>Affiliated to an.university</p>
                         </div>
@@ -174,7 +180,7 @@
                 </div>
 
                 <div class="about-section">
-                    <h2>💬 College Chatbot</h2>
+                    <h2><i class="fas fa-robot"></i> College Chatbot</h2>
                     <p>Our AI-powered chatbot is available 24/7 to answer your questions about courses, fees, admissions, timings, and more. Students can access the chatbot from their dashboard to get instant information and support.</p>
                 </div>
             </div>
@@ -183,4 +189,3 @@
 
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
-</html>
