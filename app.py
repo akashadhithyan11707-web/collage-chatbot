@@ -263,13 +263,41 @@ def teacher_dashboard():
         flash('Access denied', 'error')
         return redirect(url_for('login'))
     
-    conn = get_db_connection()
-    students = conn.execute(
-        'SELECT * FROM users WHERE role = ? ORDER BY created_at DESC', ('student',)
-    ).fetchall()
-    conn.close()
-    
-    return render_template('teacher_dashboard.html', students=students)
+    try:
+        conn = get_db_connection()
+        students = conn.execute(
+            'SELECT * FROM users WHERE role = ? ORDER BY created_at DESC', ('student',)
+        ).fetchall()
+        conn.close()
+        
+        # Parse JSON fields for each student safely
+        students_data = []
+        for student in students:
+            student_dict = dict(student)
+            # Parse subjects
+            try:
+                if student_dict['subjects']:
+                    student_dict['subjects_parsed'] = json.loads(student_dict['subjects'])
+                else:
+                    student_dict['subjects_parsed'] = []
+            except:
+                student_dict['subjects_parsed'] = []
+            
+            # Parse parent details
+            try:
+                if student_dict['parent_details']:
+                    student_dict['parent_details_parsed'] = json.loads(student_dict['parent_details'])
+                else:
+                    student_dict['parent_details_parsed'] = {}
+            except:
+                student_dict['parent_details_parsed'] = {}
+            
+            students_data.append(student_dict)
+        
+        return render_template('teacher_dashboard.html', students=students_data)
+    except Exception as e:
+        flash(f'Error loading dashboard: {str(e)}', 'error')
+        return redirect(url_for('login'))
 
 @app.route('/chatbot')
 def chatbot():
@@ -436,13 +464,37 @@ def profile():
         flash('Please login first', 'error')
         return redirect(url_for('login'))
     
-    conn = get_db_connection()
-    user = conn.execute(
-        'SELECT * FROM users WHERE id = ?', (session['user_id'],)
-    ).fetchone()
-    conn.close()
-    
-    return render_template('profile.html', user=user)
+    try:
+        conn = get_db_connection()
+        user = conn.execute(
+            'SELECT * FROM users WHERE id = ?', (session['user_id'],)
+        ).fetchone()
+        conn.close()
+        
+        if not user:
+            flash('User not found', 'error')
+            return redirect(url_for('login'))
+        
+        # Parse JSON fields safely
+        subjects = []
+        parent_details = {}
+        
+        if user['subjects']:
+            try:
+                subjects = json.loads(user['subjects']) if user['subjects'] else []
+            except:
+                subjects = []
+        
+        if user['parent_details']:
+            try:
+                parent_details = json.loads(user['parent_details']) if user['parent_details'] else {}
+            except:
+                parent_details = {}
+        
+        return render_template('profile.html', user=user, subjects=subjects, parent_details=parent_details)
+    except Exception as e:
+        flash(f'Error loading profile: {str(e)}', 'error')
+        return redirect(url_for('login'))
 
 @app.route('/about')
 def about():
@@ -513,56 +565,65 @@ def edit_student(student_id):
     if 'user_id' not in session or session['role'] != 'teacher':
         return jsonify({'error': 'Access denied'}), 403
     
-    name = request.form.get('name', '').strip()
-    roll_number = request.form.get('roll_number', '').strip()
-    department = request.form.get('department', '').strip()
-    age = request.form.get('age', '').strip()
-    blood_group = request.form.get('blood_group', '').strip()
-    
-    # Parse parent details
-    parent_name = request.form.get('parent_name', '').strip()
-    parent_phone = request.form.get('parent_phone', '').strip()
-    parent_email = request.form.get('parent_email', '').strip()
-    parent_relationship = request.form.get('parent_relationship', '').strip()
-    
-    parent_details = {}
-    if parent_name or parent_phone or parent_email or parent_relationship:
-        parent_details = {
-            'name': parent_name,
-            'phone': parent_phone,
-            'email': parent_email,
-            'relationship': parent_relationship
-        }
-    parent_details_json = json.dumps(parent_details) if parent_details else None
-    
-    # Parse subjects
-    subjects_str = request.form.get('subjects', '').strip()
-    subjects = []
-    if subjects_str:
-        subjects = [s.strip() for s in subjects_str.split(',') if s.strip()]
-    subjects_json = json.dumps(subjects) if subjects else None
-    
-    # Convert age to integer if provided
-    age_int = None
-    if age:
-        try:
-            age_int = int(age)
-        except:
-            age_int = None
-    
-    conn = get_db_connection()
     try:
-        conn.execute('''
-            UPDATE users SET name = ?, roll_number = ?, department = ?, age = ?, 
-            blood_group = ?, parent_details = ?, subjects = ?
-            WHERE id = ? AND role = ?
-        ''', (name, roll_number, department, age_int, blood_group, parent_details_json, subjects_json, student_id, 'student'))
-        conn.commit()
-        conn.close()
-        return jsonify({'success': True, 'message': 'Student updated successfully'})
+        name = request.form.get('name', '').strip()
+        roll_number = request.form.get('roll_number', '').strip()
+        department = request.form.get('department', '').strip()
+        age = request.form.get('age', '').strip()
+        blood_group = request.form.get('blood_group', '').strip()
+        
+        # Parse parent details
+        parent_name = request.form.get('parent_name', '').strip()
+        parent_phone = request.form.get('parent_phone', '').strip()
+        parent_email = request.form.get('parent_email', '').strip()
+        parent_relationship = request.form.get('parent_relationship', '').strip()
+        
+        parent_details = {}
+        if parent_name or parent_phone or parent_email or parent_relationship:
+            parent_details = {
+                'name': parent_name,
+                'phone': parent_phone,
+                'email': parent_email,
+                'relationship': parent_relationship
+            }
+        parent_details_json = json.dumps(parent_details) if parent_details else None
+        
+        # Parse subjects
+        subjects_str = request.form.get('subjects', '').strip()
+        subjects = []
+        if subjects_str:
+            subjects = [s.strip() for s in subjects_str.split(',') if s.strip()]
+        subjects_json = json.dumps(subjects) if subjects else None
+        
+        # Convert age to integer if provided
+        age_int = None
+        if age:
+            try:
+                age_int = int(age)
+            except ValueError:
+                age_int = None
+        
+        conn = get_db_connection()
+        try:
+            # Verify student exists
+            student = conn.execute('SELECT id FROM users WHERE id = ? AND role = ?', (student_id, 'student')).fetchone()
+            if not student:
+                conn.close()
+                return jsonify({'error': 'Student not found'}), 404
+            
+            conn.execute('''
+                UPDATE users SET name = ?, roll_number = ?, department = ?, age = ?, 
+                blood_group = ?, parent_details = ?, subjects = ?
+                WHERE id = ? AND role = ?
+            ''', (name, roll_number, department, age_int, blood_group, parent_details_json, subjects_json, student_id, 'student'))
+            conn.commit()
+            conn.close()
+            return jsonify({'success': True, 'message': 'Student updated successfully'})
+        except sqlite3.Error as e:
+            conn.close()
+            return jsonify({'error': f'Database error: {str(e)}'}), 500
     except Exception as e:
-        conn.close()
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': f'An error occurred: {str(e)}'}), 500
 
 @app.route('/teacher/reset-password/<int:student_id>', methods=['POST'])
 def reset_password(student_id):
@@ -786,8 +847,8 @@ def get_chatbot_questions(student_id):
     if 'user_id' not in session or session['role'] != 'teacher':
         return jsonify({'error': 'Access denied'}), 403
     
-    conn = get_db_connection()
     try:
+        conn = get_db_connection()
         student = conn.execute('SELECT chatbot_questions FROM users WHERE id = ?', (student_id,)).fetchone()
         conn.close()
         
@@ -795,13 +856,87 @@ def get_chatbot_questions(student_id):
             try:
                 questions = json.loads(student['chatbot_questions'])
                 return jsonify({'success': True, 'questions': questions})
-            except:
+            except json.JSONDecodeError:
                 return jsonify({'success': True, 'questions': []})
         else:
             return jsonify({'success': True, 'questions': []})
     except Exception as e:
+        return jsonify({'error': f'An error occurred: {str(e)}'}), 500
+
+# Teacher profile editing routes
+@app.route('/teacher/edit-profile', methods=['GET', 'POST'])
+def edit_teacher_profile():
+    """Edit teacher profile"""
+    if 'user_id' not in session or session['role'] != 'teacher':
+        flash('Access denied', 'error')
+        return redirect(url_for('login'))
+    
+    if request.method == 'POST':
+        try:
+            name = request.form.get('name', '').strip()
+            department = request.form.get('department', '').strip()
+            age = request.form.get('age', '').strip()
+            blood_group = request.form.get('blood_group', '').strip()
+            
+            # Convert age to integer if provided
+            age_int = None
+            if age:
+                try:
+                    age_int = int(age)
+                except ValueError:
+                    age_int = None
+            
+            conn = get_db_connection()
+            try:
+                conn.execute('''
+                    UPDATE users SET name = ?, department = ?, age = ?, blood_group = ?
+                    WHERE id = ? AND role = ?
+                ''', (name, department, age_int, blood_group, session['user_id'], 'teacher'))
+                conn.commit()
+                conn.close()
+                
+                # Update session
+                session['name'] = name
+                
+                flash('Profile updated successfully!', 'success')
+                return redirect(url_for('profile'))
+            except sqlite3.Error as e:
+                conn.close()
+                flash(f'Database error: {str(e)}', 'error')
+        except Exception as e:
+            flash(f'An error occurred: {str(e)}', 'error')
+    
+    # GET request - show edit form
+    try:
+        conn = get_db_connection()
+        user = conn.execute(
+            'SELECT * FROM users WHERE id = ? AND role = ?', (session['user_id'], 'teacher')
+        ).fetchone()
         conn.close()
-        return jsonify({'error': str(e)}), 500
+        
+        if not user:
+            flash('User not found', 'error')
+            return redirect(url_for('login'))
+        
+        return render_template('edit_teacher_profile.html', user=user)
+    except Exception as e:
+        flash(f'Error loading profile: {str(e)}', 'error')
+        return redirect(url_for('profile'))
+
+# Error handlers
+@app.errorhandler(404)
+def not_found(error):
+    return render_template('error.html', error='Page not found'), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    return render_template('error.html', error='Internal server error. Please try again later.'), 500
+
+@app.errorhandler(Exception)
+def handle_exception(e):
+    # Log the error (in production, use proper logging)
+    print(f"Error: {str(e)}")
+    return jsonify({'error': 'An error occurred. Please try again.'}), 500
 
 if __name__ == '__main__':
     # Initialize database

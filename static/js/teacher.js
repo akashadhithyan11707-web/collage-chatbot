@@ -45,53 +45,45 @@ function openEditModal(studentId, name, rollNumber, department, age, bloodGroup,
 }
 
 function openEditModalFromButton(button) {
-    const studentId = button.getAttribute('data-student-id');
-    const studentDataJson = button.getAttribute('data-student-data');
+    const studentId = parseInt(button.getAttribute('data-student-id'));
+    const name = button.getAttribute('data-student-name') || '';
+    const rollNumber = button.getAttribute('data-student-roll') || '';
+    const department = button.getAttribute('data-student-dept') || '';
+    const age = button.getAttribute('data-student-age') || '';
+    const bloodGroup = button.getAttribute('data-student-blood') || '';
+    const subjectsJson = button.getAttribute('data-student-subjects') || '[]';
+    const parentDetailsJson = button.getAttribute('data-student-parent') || '{}';
     
-    try {
-        const studentData = JSON.parse(studentDataJson);
-        openEditModalWithData(parseInt(studentId), studentData);
-    } catch (e) {
-        console.error('Error parsing student data:', e);
-        showNotification('Error loading student data', 'error');
-    }
-}
-
-function openEditModalWithData(studentId, studentData) {
     let subjects = [];
     let parentDetails = {};
     
     try {
-        if (studentData.subjects) {
-            if (typeof studentData.subjects === 'string') {
-                subjects = JSON.parse(studentData.subjects);
-            } else {
-                subjects = studentData.subjects;
-            }
+        subjects = JSON.parse(subjectsJson);
+        if (!Array.isArray(subjects)) {
+            subjects = [];
         }
     } catch (e) {
+        console.error('Error parsing subjects:', e);
         subjects = [];
     }
     
     try {
-        if (studentData.parent_details) {
-            if (typeof studentData.parent_details === 'string') {
-                parentDetails = JSON.parse(studentData.parent_details);
-            } else {
-                parentDetails = studentData.parent_details;
-            }
+        parentDetails = JSON.parse(parentDetailsJson);
+        if (typeof parentDetails !== 'object' || parentDetails === null) {
+            parentDetails = {};
         }
     } catch (e) {
+        console.error('Error parsing parent details:', e);
         parentDetails = {};
     }
     
     openEditModal(
         studentId,
-        studentData.name || '',
-        studentData.roll_number || '',
-        studentData.department || '',
-        studentData.age || null,
-        studentData.blood_group || '',
+        name,
+        rollNumber,
+        department,
+        age || null,
+        bloodGroup,
         subjects,
         parentDetails
     );

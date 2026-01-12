@@ -77,6 +77,39 @@
                         <span>{{ user.department }}</span>
                     </div>
                     {% endif %}
+                    {% if user.age %}
+                    <div class="detail-item">
+                        <label>Age:</label>
+                        <span>{{ user.age }}</span>
+                    </div>
+                    {% endif %}
+                    {% if user.blood_group %}
+                    <div class="detail-item">
+                        <label>Blood Group:</label>
+                        <span>{{ user.blood_group }}</span>
+                    </div>
+                    {% endif %}
+                    {% if session.role == 'student' and subjects %}
+                    <div class="detail-item">
+                        <label>Subjects:</label>
+                        <span>
+                            {% for subject in subjects %}
+                                <span class="subject-badge">{{ subject }}</span>
+                            {% endfor %}
+                        </span>
+                    </div>
+                    {% endif %}
+                    {% if session.role == 'student' and parent_details %}
+                    <div class="detail-item">
+                        <label>Parent/Guardian:</label>
+                        <span>
+                            {% if parent_details.name %}{{ parent_details.name }}{% endif %}
+                            {% if parent_details.relationship %} ({{ parent_details.relationship }}){% endif %}
+                            {% if parent_details.phone %}<br><small>Phone: {{ parent_details.phone }}</small>{% endif %}
+                            {% if parent_details.email %}<br><small>Email: {{ parent_details.email }}</small>{% endif %}
+                        </span>
+                    </div>
+                    {% endif %}
                     <div class="detail-item">
                         <label>Member Since:</label>
                         <span>{{ user.created_at[:10] if user.created_at else 'N/A' }}</span>
@@ -86,6 +119,10 @@
                 {% if session.role == 'student' %}
                 <div class="profile-note">
                     <p>📝 Note: Profile details cannot be edited. Contact your teacher for any changes.</p>
+                </div>
+                {% elif session.role == 'teacher' %}
+                <div class="profile-actions">
+                    <a href="{{ url_for('edit_teacher_profile') }}" class="btn btn-primary">Edit Profile</a>
                 </div>
                 {% endif %}
             </div>

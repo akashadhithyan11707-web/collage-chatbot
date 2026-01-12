@@ -54,6 +54,10 @@
                             <th>Name</th>
                             <th>Roll Number</th>
                             <th>Department</th>
+                            <th>Age</th>
+                            <th>Blood Group</th>
+                            <th>Subjects</th>
+                            <th>Parent Details</th>
                             <th>Login ID</th>
                             <th>Actions</th>
                         </tr>
@@ -72,9 +76,37 @@
                                 <td>{{ student.name or 'N/A' }}</td>
                                 <td>{{ student.roll_number or 'N/A' }}</td>
                                 <td>{{ student.department or 'N/A' }}</td>
+                                <td>{{ student.age or 'N/A' }}</td>
+                                <td>{{ student.blood_group or 'N/A' }}</td>
+                                <td>
+                                    {% if student.subjects_parsed %}
+                                        {% for subject in student.subjects_parsed %}
+                                            <span class="subject-badge">{{ subject }}</span>
+                                        {% endfor %}
+                                    {% else %}
+                                        N/A
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if student.parent_details_parsed %}
+                                        {% if student.parent_details_parsed.name %}
+                                            <strong>{{ student.parent_details_parsed.name }}</strong>
+                                            {% if student.parent_details_parsed.relationship %}
+                                                ({{ student.parent_details_parsed.relationship }})
+                                            {% endif %}
+                                            {% if student.parent_details_parsed.phone %}
+                                                <br><small>📞 {{ student.parent_details_parsed.phone }}</small>
+                                            {% endif %}
+                                        {% else %}
+                                            N/A
+                                        {% endif %}
+                                    {% else %}
+                                        N/A
+                                    {% endif %}
+                                </td>
                                 <td>{{ student.email_phone }}</td>
                                 <td>
-                                    <button class="btn-icon" data-student-id="{{ student.id }}" data-student-data="{{ {'name': student.name or '', 'roll_number': student.roll_number or '', 'department': student.department or '', 'age': student.age, 'blood_group': student.blood_group or '', 'subjects': student.subjects or '[]', 'parent_details': student.parent_details or '{}'} | tojson }}" onclick="openEditModalFromButton(this)" title="Edit">✏️</button>
+                                    <button class="btn-icon" data-student-id="{{ student.id }}" data-student-name="{{ student.name or '' }}" data-student-roll="{{ student.roll_number or '' }}" data-student-dept="{{ student.department or '' }}" data-student-age="{{ student.age or '' }}" data-student-blood="{{ student.blood_group or '' }}" data-student-subjects="{{ student.subjects_parsed | tojson | safe }}" data-student-parent="{{ student.parent_details_parsed | tojson | safe }}" onclick="openEditModalFromButton(this)" title="Edit">✏️</button>
                                     <button class="btn-icon" data-student-id="{{ student.id }}" onclick="openMarksModalFromButton(this)" title="Update Marks">📊</button>
                                     <button class="btn-icon" data-student-id="{{ student.id }}" onclick="openArrearsModalFromButton(this)" title="Update Arrears">⚠️</button>
                                     <button class="btn-icon" data-student-id="{{ student.id }}" onclick="openSubjectNotesModalFromButton(this)" title="Add Subject Notes">📝</button>
@@ -87,7 +119,7 @@
                             {% endfor %}
                         {% else %}
                             <tr>
-                                <td colspan="6" class="no-data">No students found. Add your first student!</td>
+                                <td colspan="10" class="no-data">No students found. Add your first student!</td>
                             </tr>
                         {% endif %}
                     </tbody>
