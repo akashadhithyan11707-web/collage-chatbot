@@ -362,7 +362,7 @@ def chatbot_message():
     }
     
     # Find matching response
-    bot_response = "I'm here to help! Sri Aravindhar Arts and Science College offers 3-year programs with 6 semesters.\n\nYou can ask me about:\n- Courses and Subjects (7-8+ subjects per course)\n- Fees (₹12,000 per semester)\n- Admissions\n- Timings (9:30 AM - 3:30 PM)\n- Contact Information\n- College Name\n\nWhat would you like to know?"
+    bot_response = "I'm here to help! Sac College offers 3-year programs with 6 semesters.\n\nYou can ask me about:\n- Courses and Subjects (7-8+ subjects per course)\n- Fees (₹12,000 per semester)\n- Admissions\n- Timings (9:30 AM - 3:30 PM)\n- Contact Information\n- College Name\n\nWhat would you like to know?"
     
     for category, data in responses.items():
         if any(keyword in user_message for keyword in data['keywords']):
