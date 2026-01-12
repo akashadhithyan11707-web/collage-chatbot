@@ -230,6 +230,11 @@ def student_dashboard():
         'SELECT * FROM users WHERE id = ?', (session['user_id'],)
     ).fetchone()
     conn.close()
+
+    if user is None:
+        session.clear()
+        flash('User not found. Please login again.', 'error')
+        return redirect(url_for('login'))
     
     # Parse subject notes, subjects, and parent details
     subject_notes = {}
@@ -313,7 +318,7 @@ def chatbot_message():
     responses = {
         'course': {
             'keywords': ['course', 'courses', 'program', 'programs', 'degree', 'degrees', 'bca', 'bsc', 'bcom', 'bba', 'ca'],
-            'response': 'Sri Aravindhar Arts and Science College offers the following courses:\n\nAll courses are 3-year programs with 6 semesters, affiliated to Annamalai University.\n\n📚 COMPUTER SCIENCE DEPARTMENT:\n\n• BCA (Bachelor of Computer Applications)\n  Subjects: Programming in C, Data Structures, Database Management, Web Technologies, Software Engineering, Computer Networks, Operating Systems, Object-Oriented Programming, Java Programming, Python Programming, Mobile Application Development, Cloud Computing\n\n• BSc CS (Bachelor of Science in Computer Science)\n  Subjects: Programming Fundamentals, Data Structures & Algorithms, Database Systems, Computer Networks, Operating Systems, Software Engineering, Web Development, Mobile Computing, Artificial Intelligence, Machine Learning, Cloud Computing, Cyber Security\n\n🔢 MATHEMATICS DEPARTMENT:\n\n• BSc Maths (Bachelor of Science in Mathematics)\n  Subjects: Algebra, Calculus, Differential Equations, Statistics, Probability, Linear Algebra, Discrete Mathematics, Numerical Methods, Mathematical Modeling, Operations Research, Graph Theory, Real Analysis\n\n🔬 SCIENCE DEPARTMENT:\n\n• BSc Chemistry\n  Subjects: Organic Chemistry, Inorganic Chemistry, Physical Chemistry, Analytical Chemistry, Biochemistry, Environmental Chemistry, Industrial Chemistry, Polymer Chemistry, Spectroscopy, Quantum Chemistry, Green Chemistry, Medicinal Chemistry\n\n• BSc Physics\n  Subjects: Mechanics, Thermodynamics, Electromagnetism, Optics, Quantum Mechanics, Nuclear Physics, Solid State Physics, Electronics, Mathematical Physics, Statistical Physics, Astrophysics, Modern Physics\n\n💼 COMMERCE DEPARTMENT:\n\n• BCom (Bachelor of Commerce)\n  Subjects: Financial Accounting, Cost Accounting, Management Accounting, Business Law, Corporate Law, Income Tax, Banking & Insurance, Business Statistics, Business Mathematics, Marketing Management, Human Resource Management, Entrepreneurship\n\n📊 BUSINESS DEPARTMENT:\n\n• BBA (Bachelor of Business Administration)\n  Subjects: Principles of Management, Marketing Management, Financial Management, Human Resource Management, Operations Management, Business Statistics, Business Law, Organizational Behavior, Strategic Management, Entrepreneurship, International Business, Business Communication\n\n• CA (Chartered Accountancy)\n  Subjects: Financial Accounting, Cost Accounting, Management Accounting, Auditing, Taxation, Corporate Law, Business Law, Financial Management, Information Technology, Economics, Business Mathematics, Statistics\n\nFor admission details, contact: 6381706363'
+            'response': 'Sac College offers the following courses:\n\nAll courses are 3-year programs with 6 semesters, affiliated to an.university.\n\n📚 COMPUTER SCIENCE DEPARTMENT:\n\n• BCA (Bachelor of Computer Applications)\n  Subjects: Programming in C, Data Structures, Database Management, Web Technologies, Software Engineering, Computer Networks, Operating Systems, Object-Oriented Programming, Java Programming, Python Programming, Mobile Application Development, Cloud Computing\n\n• BSc CS (Bachelor of Science in Computer Science)\n  Subjects: Programming Fundamentals, Data Structures & Algorithms, Database Systems, Computer Networks, Operating Systems, Software Engineering, Web Development, Mobile Computing, Artificial Intelligence, Machine Learning, Cloud Computing, Cyber Security\n\n🔢 MATHEMATICS DEPARTMENT:\n\n• BSc Maths (Bachelor of Science in Mathematics)\n  Subjects: Algebra, Calculus, Differential Equations, Statistics, Probability, Linear Algebra, Discrete Mathematics, Numerical Methods, Mathematical Modeling, Operations Research, Graph Theory, Real Analysis\n\n🔬 SCIENCE DEPARTMENT:\n\n• BSc Chemistry\n  Subjects: Organic Chemistry, Inorganic Chemistry, Physical Chemistry, Analytical Chemistry, Biochemistry, Environmental Chemistry, Industrial Chemistry, Polymer Chemistry, Spectroscopy, Quantum Chemistry, Green Chemistry, Medicinal Chemistry\n\n• BSc Physics\n  Subjects: Mechanics, Thermodynamics, Electromagnetism, Optics, Quantum Mechanics, Nuclear Physics, Solid State Physics, Electronics, Mathematical Physics, Statistical Physics, Astrophysics, Modern Physics\n\n💼 COMMERCE DEPARTMENT:\n\n• BCom (Bachelor of Commerce)\n  Subjects: Financial Accounting, Cost Accounting, Management Accounting, Business Law, Corporate Law, Income Tax, Banking & Insurance, Business Statistics, Business Mathematics, Marketing Management, Human Resource Management, Entrepreneurship\n\n📊 BUSINESS DEPARTMENT:\n\n• BBA (Bachelor of Business Administration)\n  Subjects: Principles of Management, Organizational Behavior, Marketing Management, Human Resource Management, Financial Management, Business Environment, Strategic Management, Entrepreneurship, Business Ethics, International Business, Operations Management, Supply Chain Management\n\n• CA (Chartered Accountancy)\n  Subjects: Principles and Practice of Accounting, Business Laws and Business Correspondence, Business Mathematics and Logical Reasoning, Business Economics, Accounting, Corporate and Other Laws, Cost and Management Accounting, Taxation, Advanced Accounting, Auditing and Assurance, Enterprise Information Systems, Financial Management\n\nFor admission details, contact: 6381706363'
         },
         'fee': {
             'keywords': ['fee', 'fees', 'cost', 'price', 'tuition', 'payment'],
@@ -936,14 +941,20 @@ def internal_error(error):
 def handle_exception(e):
     # Log the error (in production, use proper logging)
     print(f"Error: {str(e)}")
-    return jsonify({'error': 'An error occurred. Please try again.'}), 500
+    # Check if request accepts JSON or is an XHR request
+    if request.is_json or request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return jsonify({'error': 'An error occurred. Please try again.'}), 500
+    return render_template('error.html', error=f'An unexpected error occurred: {str(e)}'), 500
+
+# Ensure database is initialized
+try:
+    init_db()
+except Exception as e:
+    print(f"Database initialization failed: {e}")
+
+# Create upload folder if it doesn't exist
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 if __name__ == '__main__':
-    # Initialize database
-    init_db()
-    
-    # Create upload folder if it doesn't exist
-    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-    
     # Run the app
     app.run(debug=True, host='0.0.0.0', port=5000)
