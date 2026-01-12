@@ -5,6 +5,35 @@
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
+    // Mobile Menu Toggle
+    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+
+    if (mobileMenuToggle) {
+        mobileMenuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    }
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (mobileMenuToggle && navLinks && !mobileMenuToggle.contains(e.target) && !navLinks.contains(e.target)) {
+            navLinks.classList.remove('active');
+        }
+    });
+
+    // Add scroll effect to navbar
+    const navbar = document.querySelector('.landing-nav');
+    if (navbar) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    }
+
     // Auto-hide flash messages after 5 seconds
     const flashMessages = document.querySelectorAll('.flash-message');
     flashMessages.forEach(message => {
@@ -67,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }, observerOptions);
 
-    document.querySelectorAll('.dashboard-card, .about-section, .feature-card').forEach(card => {
+    document.querySelectorAll('.dashboard-card, .about-section, .feature-item, .course-card, .info-card').forEach(card => {
         observer.observe(card);
     });
 });
