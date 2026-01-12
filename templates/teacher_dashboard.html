@@ -74,14 +74,14 @@
                                 <td>{{ student.department or 'N/A' }}</td>
                                 <td>{{ student.email_phone }}</td>
                                 <td>
-                                    <button class="btn-icon" onclick="openEditModalWithData({{ student.id }}, {{ {'name': student.name or '', 'roll_number': student.roll_number or '', 'department': student.department or '', 'age': student.age, 'blood_group': student.blood_group or '', 'subjects': student.subjects or '[]', 'parent_details': student.parent_details or '{}'} | tojson | safe }})" title="Edit">✏️</button>
-                                    <button class="btn-icon" onclick="openMarksModal({{ student.id }})" title="Update Marks">📊</button>
-                                    <button class="btn-icon" onclick="openArrearsModal({{ student.id }})" title="Update Arrears">⚠️</button>
-                                    <button class="btn-icon" onclick="openSubjectNotesModal({{ student.id }})" title="Add Subject Notes">📝</button>
-                                    <button class="btn-icon" onclick="openNotesLinkModal({{ student.id }}, '{{ student.notes_link or '' }}')" title="Update Notes Link">📚</button>
-                                    <button class="btn-icon" onclick="openChatbotQuestionsModal({{ student.id }})" title="Manage Chatbot Questions">🤖</button>
-                                    <button class="btn-icon" onclick="openResetPasswordModal({{ student.id }})" title="Reset Password">🔑</button>
-                                    <button class="btn-icon btn-danger" onclick="deleteStudent({{ student.id }})" title="Delete">🗑️</button>
+                                    <button class="btn-icon" data-student-id="{{ student.id }}" data-student-data="{{ {'name': student.name or '', 'roll_number': student.roll_number or '', 'department': student.department or '', 'age': student.age, 'blood_group': student.blood_group or '', 'subjects': student.subjects or '[]', 'parent_details': student.parent_details or '{}'} | tojson }}" onclick="openEditModalFromButton(this)" title="Edit">✏️</button>
+                                    <button class="btn-icon" data-student-id="{{ student.id }}" onclick="openMarksModalFromButton(this)" title="Update Marks">📊</button>
+                                    <button class="btn-icon" data-student-id="{{ student.id }}" onclick="openArrearsModalFromButton(this)" title="Update Arrears">⚠️</button>
+                                    <button class="btn-icon" data-student-id="{{ student.id }}" onclick="openSubjectNotesModalFromButton(this)" title="Add Subject Notes">📝</button>
+                                    <button class="btn-icon" data-student-id="{{ student.id }}" data-notes-link="{{ student.notes_link or '' }}" onclick="openNotesLinkModalFromButton(this)" title="Update Notes Link">📚</button>
+                                    <button class="btn-icon" data-student-id="{{ student.id }}" onclick="openChatbotQuestionsModalFromButton(this)" title="Manage Chatbot Questions">🤖</button>
+                                    <button class="btn-icon" data-student-id="{{ student.id }}" onclick="openResetPasswordModalFromButton(this)" title="Reset Password">🔑</button>
+                                    <button class="btn-icon btn-danger" data-student-id="{{ student.id }}" onclick="deleteStudentFromButton(this)" title="Delete">🗑️</button>
                                 </td>
                             </tr>
                             {% endfor %}

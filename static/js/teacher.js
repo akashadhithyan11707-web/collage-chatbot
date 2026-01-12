@@ -44,6 +44,19 @@ function openEditModal(studentId, name, rollNumber, department, age, bloodGroup,
     document.getElementById('editStudentModal').classList.add('show');
 }
 
+function openEditModalFromButton(button) {
+    const studentId = button.getAttribute('data-student-id');
+    const studentDataJson = button.getAttribute('data-student-data');
+    
+    try {
+        const studentData = JSON.parse(studentDataJson);
+        openEditModalWithData(parseInt(studentId), studentData);
+    } catch (e) {
+        console.error('Error parsing student data:', e);
+        showNotification('Error loading student data', 'error');
+    }
+}
+
 function openEditModalWithData(studentId, studentData) {
     let subjects = [];
     let parentDetails = {};
@@ -88,6 +101,11 @@ function closeEditModal() {
     document.getElementById('editStudentModal').classList.remove('show');
 }
 
+function openResetPasswordModalFromButton(button) {
+    const studentId = parseInt(button.getAttribute('data-student-id'));
+    openResetPasswordModal(studentId);
+}
+
 function openResetPasswordModal(studentId) {
     document.getElementById('resetStudentId').value = studentId;
     document.getElementById('resetPassword').value = '';
@@ -96,6 +114,11 @@ function openResetPasswordModal(studentId) {
 
 function closeResetPasswordModal() {
     document.getElementById('resetPasswordModal').classList.remove('show');
+}
+
+function openMarksModalFromButton(button) {
+    const studentId = parseInt(button.getAttribute('data-student-id'));
+    openMarksModal(studentId);
 }
 
 function openMarksModal(studentId) {
@@ -110,6 +133,11 @@ function closeMarksModal() {
     document.getElementById('updateMarksModal').classList.remove('show');
 }
 
+function openArrearsModalFromButton(button) {
+    const studentId = parseInt(button.getAttribute('data-student-id'));
+    openArrearsModal(studentId);
+}
+
 function openArrearsModal(studentId) {
     document.getElementById('arrearsStudentId').value = studentId;
     document.getElementById('arrearsSubject').value = '';
@@ -119,6 +147,11 @@ function openArrearsModal(studentId) {
 
 function closeArrearsModal() {
     document.getElementById('updateArrearsModal').classList.remove('show');
+}
+
+function openSubjectNotesModalFromButton(button) {
+    const studentId = parseInt(button.getAttribute('data-student-id'));
+    openSubjectNotesModal(studentId);
 }
 
 function openSubjectNotesModal(studentId) {
@@ -132,6 +165,12 @@ function closeSubjectNotesModal() {
     document.getElementById('updateSubjectNotesModal').classList.remove('show');
 }
 
+function openNotesLinkModalFromButton(button) {
+    const studentId = parseInt(button.getAttribute('data-student-id'));
+    const currentLink = button.getAttribute('data-notes-link') || '';
+    openNotesLinkModal(studentId, currentLink);
+}
+
 function openNotesLinkModal(studentId, currentLink) {
     document.getElementById('notesStudentId').value = studentId;
     document.getElementById('notesLink').value = currentLink || '';
@@ -140,6 +179,11 @@ function openNotesLinkModal(studentId, currentLink) {
 
 function closeNotesLinkModal() {
     document.getElementById('updateNotesLinkModal').classList.remove('show');
+}
+
+function openChatbotQuestionsModalFromButton(button) {
+    const studentId = parseInt(button.getAttribute('data-student-id'));
+    openChatbotQuestionsModal(studentId);
 }
 
 function openChatbotQuestionsModal(studentId) {
@@ -349,6 +393,11 @@ document.getElementById('resetPasswordForm').addEventListener('submit', async fu
 });
 
 // Delete Student
+function deleteStudentFromButton(button) {
+    const studentId = parseInt(button.getAttribute('data-student-id'));
+    deleteStudent(studentId);
+}
+
 async function deleteStudent(studentId) {
     if (!confirm('Are you sure you want to delete this student? This action cannot be undone.')) {
         return;
