@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function addUserMessage(message) {
         const messageDiv = document.createElement('div');
         messageDiv.className = 'message user-message';
+        messageDiv.style.opacity = '0';
         messageDiv.innerHTML = `
             <div class="message-avatar">👤</div>
             <div class="message-content">
@@ -26,12 +27,17 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         chatMessages.appendChild(messageDiv);
         scrollToBottom();
+        // Trigger animation
+        setTimeout(() => {
+            messageDiv.style.opacity = '1';
+        }, 10);
     }
 
     // Add bot message to chat
     function addBotMessage(message) {
         const messageDiv = document.createElement('div');
         messageDiv.className = 'message bot-message';
+        messageDiv.style.opacity = '0';
         messageDiv.innerHTML = `
             <div class="message-avatar">🤖</div>
             <div class="message-content">
@@ -41,6 +47,10 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         chatMessages.appendChild(messageDiv);
         scrollToBottom();
+        // Trigger animation
+        setTimeout(() => {
+            messageDiv.style.opacity = '1';
+        }, 10);
     }
 
     // Show typing indicator
