@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile - College Chatbot</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
@@ -54,7 +55,7 @@
                     {% if user.photo_path and session.role == 'student' %}
                         <img src="{{ url_for('static', filename=user.photo_path) }}" alt="Profile Photo" class="profile-photo-large">
                     {% else %}
-                        <div class="profile-photo-large-placeholder">👤</div>
+                        <div class="profile-photo-large-placeholder"><i class="fas fa-user"></i></div>
                     {% endif %}
                     <h2>{{ user.name or 'User' }}</h2>
                     <p class="profile-role">{{ user.role|title }}</p>

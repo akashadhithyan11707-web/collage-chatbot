@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sri Aravindhar Arts and Science College</title>
+    <title>Sac College</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body class="landing-page">
@@ -11,8 +12,13 @@
     <nav class="landing-nav">
         <div class="nav-container">
             <div class="nav-logo">
-                <h1>🏛️ Sri Aravindhar Arts and Science College</h1>
+                <h1><i class="fas fa-university"></i> Sac College</h1>
             </div>
+            <button class="mobile-menu-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
             <div class="nav-links">
                 <a href="{{ url_for('index') }}" class="nav-link active">Home</a>
                 <a href="{{ url_for('about') }}" class="nav-link">About</a>
@@ -26,12 +32,12 @@
     <!-- Hero Section -->
     <section class="hero-section">
         <div class="hero-content">
-            <h1 class="hero-title">Welcome to Sri Aravindhar Arts and Science College</h1>
-            <p class="hero-subtitle">Affiliated to Annamalai University</p>
+            <h1 class="hero-title">Welcome to Sac College</h1>
+            <p class="hero-subtitle">Affiliated to an.university</p>
             <p class="hero-description">Excellence in Education | Quality Learning | Bright Future</p>
             <div class="hero-buttons">
-                <a href="{{ url_for('chatbot') }}" class="btn btn-primary btn-large">💬 Ask Our Chatbot</a>
-                <a href="{{ url_for('about') }}" class="btn btn-secondary btn-large">ℹ️ Learn More</a>
+                <a href="{{ url_for('chatbot') }}" class="btn btn-primary btn-large"><i class="fas fa-comments"></i> Ask Our Chatbot</a>
+                <a href="{{ url_for('about') }}" class="btn btn-secondary btn-large"><i class="fas fa-info-circle"></i> Learn More</a>
             </div>
         </div>
     </section>
@@ -41,24 +47,24 @@
         <div class="container">
             <div class="info-grid">
                 <div class="info-card">
-                    <div class="info-icon">📞</div>
+                    <div class="info-icon"><i class="fas fa-phone-alt"></i></div>
                     <h3>Contact Us</h3>
                     <p>Phone: 6381706363</p>
                     <p>Email: akashadhithyan11707@gmail.com</p>
                 </div>
                 <div class="info-card">
-                    <div class="info-icon">📍</div>
+                    <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
                     <h3>Location</h3>
                     <p>Sedharapet, Vannur</p>
                     <p>Tamil Nadu</p>
                 </div>
                 <div class="info-card">
-                    <div class="info-icon">💰</div>
+                    <div class="info-icon"><i class="fas fa-rupee-sign"></i></div>
                     <h3>Semester Fee</h3>
                     <p>₹12,000 per semester</p>
                 </div>
                 <div class="info-card">
-                    <div class="info-icon">⏰</div>
+                    <div class="info-icon"><i class="fas fa-clock"></i></div>
                     <h3>College Timings</h3>
                     <p>9:30 AM - 3:30 PM</p>
                     <p>Monday to Friday</p>
@@ -70,23 +76,23 @@
     <!-- Courses Section -->
     <section class="courses-section">
         <div class="container">
-            <h2 class="section-title">📚 Courses Offered</h2>
+            <h2 class="section-title"><i class="fas fa-book-open"></i> Courses Offered</h2>
             <div class="courses-grid">
                 <div class="course-card">
-                    <h3>💻 Computer Science Department</h3>
+                    <h3><i class="fas fa-laptop-code"></i> Computer Science Department</h3>
                     <ul>
                         <li>BCA (Bachelor of Computer Applications)</li>
                         <li>BSc CS (Bachelor of Science in Computer Science)</li>
                     </ul>
                 </div>
                 <div class="course-card">
-                    <h3>🔢 Mathematics Department</h3>
+                    <h3><i class="fas fa-calculator"></i> Mathematics Department</h3>
                     <ul>
                         <li>BSc Maths (Bachelor of Science in Mathematics)</li>
                     </ul>
                 </div>
                 <div class="course-card">
-                    <h3>🔬 Science Department</h3>
+                    <h3><i class="fas fa-microscope"></i> Science Department</h3>
                     <ul>
                         <li>BSc Chemistry</li>
                         <li>BSc Physics</li>
@@ -112,16 +118,16 @@
     <!-- Features Section -->
     <section class="features-section">
         <div class="container">
-            <h2 class="section-title">🌟 Why Choose Us?</h2>
+            <h2 class="section-title"><i class="fas fa-star"></i> Why Choose Us?</h2>
             <div class="features-grid">
                 <div class="feature-item">
-                    <div class="feature-icon">🎓</div>
+                    <div class="feature-icon"><i class="fas fa-user-graduate"></i></div>
                     <h3>Quality Education</h3>
-                    <p>Affiliated to Annamalai University with experienced faculty</p>
+                    <p>Affiliated to an.university with experienced faculty</p>
                 </div>
                 <div class="feature-item">
-                    <div class="feature-icon">📖</div>
-                    <h3>Modern Facilities</h3>
+                    <div class="feature-icon"><i class="fas fa-flask"></i></div>
+                    <h3>Modern Labs</h3>
                     <p>State-of-the-art infrastructure and learning resources</p>
                 </div>
                 <div class="feature-item">
@@ -142,7 +148,7 @@
     <section class="cta-section">
         <div class="container">
             <h2>Ready to Start Your Journey?</h2>
-            <p>Join Sri Aravindhar Arts and Science College today!</p>
+            <p>Join Sac College today!</p>
             <div class="cta-buttons">
                 <a href="{{ url_for('student_login') }}" class="btn btn-primary btn-large">Student Login</a>
                 <a href="{{ url_for('chatbot') }}" class="btn btn-secondary btn-large">Ask Questions</a>
@@ -153,8 +159,8 @@
     <!-- Footer -->
     <footer class="landing-footer">
         <div class="container">
-            <p>&copy; 2024 Sri Aravindhar Arts and Science College. All rights reserved.</p>
-            <p>Affiliated to Annamalai University | Sedharapet, Vannur, Tamil Nadu</p>
+            <p>&copy; 2024 Sac College. All rights reserved.</p>
+            <p>Affiliated to an.university | Sedharapet, Vannur, Tamil Nadu</p>
         </div>
     </footer>
 
